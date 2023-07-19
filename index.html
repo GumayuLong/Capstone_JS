@@ -117,30 +117,37 @@
                         <div class="form-group">
                             <label>Tên Sản Phẩm</label>
                             <input id="TenSP" class="form-control" placeholder="Nhập vào tên sản phẩm" />
+                            <span class="sp-thongbao" style="display: none; color: red;" id="tbTenSP"></span>
                         </div>
                         <div class="form-group">
                             <label>Giá</label>
                             <input id="GiaSP" class="form-control" placeholder="Nhập vào giá" />
+                            <span class="sp-thongbao" id="tbGiaSP"></span>
                         </div>
                         <div class="form-group">
                             <label>Screen</label>
                             <input id="manHinh" class="form-control" placeholder="Nhập vào giá" />
+                            <span class="sp-thongbao" id="tbScreen"></span>
                         </div>
                         <div class="form-group">
                             <label>Camera sau</label>
                             <input id="camerasau" class="form-control" placeholder="Nhập vào giá" />
+                            <span class="sp-thongbao" id="tbBackCamera"></span>
                         </div>
                         <div class="form-group">
                             <label>Camera trước</label>
                             <input id="cameratruoc" class="form-control" placeholder="Nhập vào giá" />
+                            <span class="sp-thongbao" id="tbFrontCamera"></span>
                         </div>
                         <div class="form-group">
                             <label>Hình Ảnh</label>
                             <input id="HinhSP" class="form-control" placeholder="Nhập vào hình sản phẩm" />
+                            <span class="sp-thongbao" id="tbImg"></span>
                         </div>
                         <div class="form-group">
                             <label for="">Mô tả: </label>
                             <textarea class="form-control" id="MoTa" cols="30" rows="10"></textarea>
+                            <span class="sp-thongbao" id="tbDesc"></span>
                         </div>
                         <div class="form-group">
                             <label>Loại sản phẩm</label>
@@ -149,6 +156,7 @@
                                 <option value="iphone">Iphone</option>
                                 <option value="samsung">Samsung</option>
                             </select>
+                            <span class="sp-thongbao" id="tbType"></span>
                         </div>
                     </div>
                     <!-- Modal footer -->
@@ -185,6 +193,7 @@
 
 <script src="./src/services/api.js"></script>
 <script src="./src/models/product.js"></script>
+<script src="./src/validation.js"></script>
 <script src="./src/controller/index.js"></script>
 </body>
 

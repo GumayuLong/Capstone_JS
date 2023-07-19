@@ -1,9 +1,11 @@
 var api = new Service();
+var validation = new Validation();
 
 function getEle (id){
     return document.getElementById(id);
 }
 
+    // Lấy thông tin product bằng API
 function getListProduct(){
     var promise = api.getListProductApi();
 
@@ -17,6 +19,7 @@ function getListProduct(){
 }
 getListProduct();
 
+    // Display product 
 function renderUI(data){
     var content = "";
     for (var i = 0; i < data.length; i++){
@@ -49,6 +52,7 @@ function renderUI(data){
     getEle("tblDanhSachSP").innerHTML = content;
 }
 
+    // Add product
 function addProduct(){
     var tenSP = getEle("TenSP").value;
     var gia = getEle("GiaSP").value;
@@ -59,18 +63,22 @@ function addProduct(){
     var moTa = getEle("MoTa").value;
     var loai = getEle("loaiSP").value;
 
+    var isValid = true;
+    // Validation TenSP
+    isValid &= validation.checkRong(tenSP, "tbTenSP", "(*) Vui lòng nhập tên sản phẩm");
+
     var product = new Product("", tenSP, gia, screen, cameraSau, cameraTruoc, hinhAnh, moTa, loai);
     var promise = api.addProductApi(product);
     promise
         .then(function(){
             getListProduct();
-            document.getElementsByClassName("close")[0].click();
         })
         .catch(function(err){
             console.log(err);
         })
 }
 
+    // Delete product
 function deleteProduct(id){
     var promise = api.deleteProductApi(id);
     promise
@@ -83,6 +91,8 @@ function deleteProduct(id){
         })
 }
 
+
+    // Send request change product to backend
 function updateProduct(id){
     document.getElementsByClassName("modal-title")[0].innerHTML = "Chỉnh sửa sản phẩm";
     var buttonEdit = `<button class="btn btn-warning" onclick="updateUI(${id})">Cập nhật</button>`;
@@ -106,6 +116,7 @@ function updateProduct(id){
         })
 }
 
+    // Update product
 function updateUI(id){
     var tenSP = getEle("TenSP").value;
     var GiaSP = getEle("GiaSP").value;
@@ -131,16 +142,20 @@ function updateUI(id){
     promise
         .then(function(){
             getListProduct();
-            document.getElementsByClassName("close")[0].click();
+            close();
         })
         .catch(function(err){
             console.log(err)
         })
 }
 
-// thêm button add
+// Add buttonAdd
 getEle("btnThemSP").onclick = function(){
     document.getElementsByClassName("modal-title")[0].innerHTML = "Thêm sản phẩm";
     var buttonAdd = `<button class="btn btn-success" onclick="addProduct()">Thêm</button>`;
     document.getElementsByClassName("modal-footer")[0].innerHTML = buttonAdd;
 };
+
+function close(){
+    document.getElementsByClassName("close")[0].click();
+}
