@@ -36,7 +36,9 @@ function renderUI(data){
                 <td>${product.desc}</td>
                 <td>${product.type}</td>
                 <td>
-                    <button class="btn btn-info">Sửa</button>
+                    <button class="btn btn-info" data-toggle="modal" data-target="#myModal" onclick="updateProduct(${
+						product.id
+					})">Sửa</button>
                     <button class="btn btn-danger" onclick="deleteProduct(${
 						product.id
 					})">Xóa</button>
@@ -78,6 +80,61 @@ function deleteProduct(id){
         })
         .catch(function(err){
             console.log(err);
+        })
+}
+
+function updateProduct(id){
+    document.getElementsByClassName("modal-title")[0].innerHTML = "Chỉnh sửa sản phẩm";
+    var buttonEdit = `<button class="btn btn-warning" onclick="updateUI(${id})">Cập nhật</button>`;
+    document.getElementsByClassName("modal-footer")[0].innerHTML = buttonEdit;
+
+    // Lấy thông tin
+    var promise = api.getProductById(id);
+    promise
+        .then(function(result){
+            getEle("TenSP").value = result.data.name;
+			getEle("GiaSP").value = result.data.price;
+			getEle("manHinh").value = result.data.screen;
+			getEle("camerasau").value = result.data.backCamera;
+			getEle("cameratruoc").value = result.data.frontCamera;
+			getEle("HinhSP").value = result.data.img;
+			getEle("MoTa").value = result.data.desc;
+			getEle("loaiSP").value = result.data.type;
+        })
+        .catch(function(err){
+            console.log(err);
+        })
+}
+
+function updateUI(id){
+    var tenSP = getEle("TenSP").value;
+    var GiaSP = getEle("GiaSP").value;
+    var screen = getEle("manHinh").value;
+    var backCamera = getEle("camerasau").value;
+    var frontCamera = getEle("cameratruoc").value;
+    var Img = getEle("HinhSP").value;
+    var Desc = getEle("MoTa").value;
+    var Type = getEle("loaiSP").value;
+
+    var product = new Product(
+		id,
+		tenSP,
+		GiaSP,
+		screen,
+		backCamera,
+		frontCamera,
+		Img,
+		Desc,
+		Type
+	);
+    var promise = api.updateProductApi(product);
+    promise
+        .then(function(){
+            getListProduct();
+            document.getElementsByClassName("close")[0].click();
+        })
+        .catch(function(err){
+            console.log(err)
         })
 }
 
