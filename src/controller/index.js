@@ -61,6 +61,7 @@ function renderUI(data){
 
     // Add product
 function addProduct(){
+    isAdd = true;
     var tenSP = getEle("TenSP").value;
     var gia = getEle("GiaSP").value;
     var screen = getEle("manHinh").value;
