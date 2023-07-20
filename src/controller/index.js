@@ -29,7 +29,7 @@ function renderUI(data){
             <tr>
                 <td>${i + 1}</td>
                 <td>${product.name}</td>
-                <td>${product.price}</td>
+                <td>${product.price}$</td>
                 <td>${product.screen}</td>
                 <td>${product.backCamera}</td>
                 <td>${product.frontCamera}</td>
@@ -54,6 +54,8 @@ function renderUI(data){
 
     // Add product
 function addProduct(){
+    //reset input
+
     var tenSP = getEle("TenSP").value;
     var gia = getEle("GiaSP").value;
     var screen = getEle("manHinh").value;
@@ -64,18 +66,46 @@ function addProduct(){
     var loai = getEle("loaiSP").value;
 
     var isValid = true;
+
     // Validation TenSP
     isValid &= validation.checkRong(tenSP, "tbTenSP", "(*) Vui lòng nhập tên sản phẩm");
 
-    var product = new Product("", tenSP, gia, screen, cameraSau, cameraTruoc, hinhAnh, moTa, loai);
-    var promise = api.addProductApi(product);
-    promise
-        .then(function(){
-            getListProduct();
-        })
-        .catch(function(err){
-            console.log(err);
-        })
+    // Validation gia
+    isValid &= validation.checkRong(gia, "tbGiaSP", "(*) Vui lòng nhập giá tiền")
+    && validation.checkNumber(gia, "tbGiaSP", "(*) Vui lòng nhập ký tự là số");
+
+    // Validation manHinh
+    isValid &= validation.checkRong(screen, "tbScreen", "(*) Vui lòng nhập kích thước màn hình");
+
+    // Validation backCamera
+    isValid &= validation.checkRong(cameraSau, "tbBackCamera", "(*) Vui lòng nhập thông số camera sau");
+
+    // Validation frontCamera
+    isValid &= validation.checkRong(cameraTruoc, "tbFrontCamera", "(*) Vui lòng nhập thông số camera trước");
+
+    // Validation hinhAnh
+    isValid &= validation.checkRong(hinhAnh, "tbImg", "(*) Vui lòng nhập đường dẫn hình ảnh");
+
+    // Validation moTa
+    isValid &= validation.checkRong(moTa, "tbDesc", "(*) Vui lòng nhập mô tả sản phẩm");
+
+    // Validation Loai
+    isValid &= validation.typeCheck("loaiSP", "tbType", "(*) Vui lòng chọn loại sản phẩm");
+
+
+    if (isValid){
+        var product = new Product("", tenSP, gia, screen, cameraSau, cameraTruoc, hinhAnh, moTa, loai);
+        var promise = api.addProductApi(product);
+        promise
+            .then(function(){
+                getListProduct();
+                close();
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+    }
+    
 }
 
     // Delete product

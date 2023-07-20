@@ -2,7 +2,7 @@ function Product (_id,_tenSP, _gia, _srceen, _backCamera, _frontCamera, _hinhAnh
     this.id = _id;
     this.name = _tenSP;
     this.price = _gia;
-    this.srceen = _srceen;
+    this.screen = _srceen;
     this.backCamera = _backCamera;
     this.frontCamera = _frontCamera;
     this.img = _hinhAnh;

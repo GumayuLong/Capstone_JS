@@ -4,12 +4,11 @@ function Validation(){
             getEle(errorId).innerHTML = mess;
 			getEle(errorId).style.display = "block";
             return false;
-        } else {
+        }
+			// True
             getEle(errorId).innerHTML = "";
 			getEle(errorId).style.display = "none";
-            close();
             return true;
-        }
     };
     
     this.typeCheck = function (idSelect, errorId, mess) {
@@ -20,13 +19,12 @@ function Validation(){
 			getEle(errorId).style.display = "none";
 
 			return true;
-		} else {
+		}
 			//false
 			getEle(errorId).innerHTML = mess;
 			getEle(errorId).style.display = "block";
 
 			return false;
-		}
 	};  
     
     this.checkNumber = function (value, errorId, mess) {
@@ -38,12 +36,36 @@ function Validation(){
 			getEle(errorId).style.display = "none";
 
 			return true;
-		} else {
+		}
 			//false
 			getEle(errorId).innerHTML = mess;
 			getEle(errorId).style.display = "block";
 
 			return false;
-		}
 	};
+
+	// // Validation nameProduct
+	// this.checkProductExist = function (value, errorId, mess, list) {
+    //     var isExist = false;
+    
+    //     for (var i = 0; i < list.length; i++) {
+    //         var product = list[i];
+    //         if (product.tenSP === value) {
+    //         isExist = true;
+    //         break;
+    //         }
+    //     }
+
+    // if (isExist) {
+    //     getEle(errorId).innerHTML = mess;
+    //     getEle(errorId).style.display = "block";
+
+    //     return false;
+    //     }
+
+    //     getEle(errorId).innerHTML = "";
+    //     getEle(errorId).style.display = "none";
+
+    //     return true;
+    // };
 }
