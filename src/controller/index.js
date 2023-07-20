@@ -1,6 +1,9 @@
 var api = new Service();
 var validation = new Validation();
 
+var arrProduct = "";
+var isAdd = true;
+
 function getEle (id){
     return document.getElementById(id);
 }
@@ -10,13 +13,17 @@ function getListProduct(){
     var promise = api.getListProductApi();
 
     promise
-        .then(function(result){
-            renderUI(result.data);
+        .then(function(product){
+            renderUI(product.data);
+            arrProduct = product.data;
+            // console.log(product.data);
+            // return result.data;
         })
         .catch(function(err){
             console.log(err);
         })
 }
+
 getListProduct();
 
     // Display product 
@@ -54,8 +61,6 @@ function renderUI(data){
 
     // Add product
 function addProduct(){
-    //reset input
-
     var tenSP = getEle("TenSP").value;
     var gia = getEle("GiaSP").value;
     var screen = getEle("manHinh").value;
@@ -67,12 +72,16 @@ function addProduct(){
 
     var isValid = true;
 
-    // Validation TenSP
-    isValid &= validation.checkRong(tenSP, "tbTenSP", "(*) Vui lòng nhập tên sản phẩm");
-
+    if(isAdd == true){
+        // Validation TenSP
+        isValid &= validation.checkRong(tenSP, "tbTenSP", "(*) Vui lòng nhập tên sản phẩm") &&
+        validation.checkProductExist(tenSP, "tbTenSP", "(*) Sản phẩm đã tồn tại", arrProduct);
+    }
+    
     // Validation gia
     isValid &= validation.checkRong(gia, "tbGiaSP", "(*) Vui lòng nhập giá tiền")
-    && validation.checkNumber(gia, "tbGiaSP", "(*) Vui lòng nhập ký tự là số");
+    && validation.checkNumber(gia, "tbGiaSP", "(*) Vui lòng nhập ký tự là số")
+    && validation.checkDoDaiKiTu(gia, "tbGiaSP", "(*) Vui lòng nhập giá từ 1 - 9999", 1, 9999);
 
     // Validation manHinh
     isValid &= validation.checkRong(screen, "tbScreen", "(*) Vui lòng nhập kích thước màn hình");
@@ -105,7 +114,7 @@ function addProduct(){
                 console.log(err);
             })
     }
-    
+    return null;
 }
 
     // Delete product
@@ -132,6 +141,8 @@ function updateProduct(id){
     var promise = api.getProductById(id);
     promise
         .then(function(result){
+            resetThongBao();
+
             getEle("TenSP").value = result.data.name;
 			getEle("GiaSP").value = result.data.price;
 			getEle("manHinh").value = result.data.screen;
@@ -148,6 +159,7 @@ function updateProduct(id){
 
     // Update product
 function updateUI(id){
+    isAdd = false;
     var tenSP = getEle("TenSP").value;
     var GiaSP = getEle("GiaSP").value;
     var screen = getEle("manHinh").value;
@@ -157,26 +169,60 @@ function updateUI(id){
     var Desc = getEle("MoTa").value;
     var Type = getEle("loaiSP").value;
 
-    var product = new Product(
-		id,
-		tenSP,
-		GiaSP,
-		screen,
-		backCamera,
-		frontCamera,
-		Img,
-		Desc,
-		Type
-	);
-    var promise = api.updateProductApi(product);
-    promise
-        .then(function(){
-            getListProduct();
-            close();
-        })
-        .catch(function(err){
-            console.log(err)
-        })
+    var isValid = true;
+
+    // Validation TenSP
+    isValid &= validation.checkRong(tenSP, "tbTenSP", "(*) Vui lòng nhập tên sản phẩm");
+    if (isAdd !== false){
+        validation.checkProductExist(tenSP, "tbTenSP", "(*) Sản phẩm đã tồn tại", arrProduct);
+    }
+    
+
+    // Validation gia
+    isValid &= validation.checkRong(GiaSP, "tbGiaSP", "(*) Vui lòng nhập giá tiền")
+    && validation.checkNumber(GiaSP, "tbGiaSP", "(*) Vui lòng nhập ký tự là số")
+    && validation.checkDoDaiKiTu(GiaSP, "tbGiaSP", "(*) Vui lòng nhập giá từ 1 - 9999", 1, 9999);
+
+    // Validation manHinh
+    isValid &= validation.checkRong(screen, "tbScreen", "(*) Vui lòng nhập kích thước màn hình");
+
+    // Validation backCamera
+    isValid &= validation.checkRong(backCamera, "tbBackCamera", "(*) Vui lòng nhập thông số camera sau");
+
+    // Validation frontCamera
+    isValid &= validation.checkRong(frontCamera, "tbFrontCamera", "(*) Vui lòng nhập thông số camera trước");
+
+    // Validation hinhAnh
+    isValid &= validation.checkRong(Img, "tbImg", "(*) Vui lòng nhập đường dẫn hình ảnh");
+
+    // Validation moTa
+    isValid &= validation.checkRong(Desc, "tbDesc", "(*) Vui lòng nhập mô tả sản phẩm");
+
+    // Validation Loai
+    isValid &= validation.typeCheck("loaiSP", "tbType", "(*) Vui lòng chọn loại sản phẩm");
+
+    if (isValid){
+        var product = new Product(
+            id,
+            tenSP,
+            GiaSP,
+            screen,
+            backCamera,
+            frontCamera,
+            Img,
+            Desc,
+            Type
+        );
+        var promise = api.updateProductApi(product);
+        promise
+            .then(function(){
+                getListProduct();
+                close();
+            })
+            .catch(function(err){
+                console.log(err)
+            })
+    }
 }
 
 // Add buttonAdd
@@ -184,8 +230,36 @@ getEle("btnThemSP").onclick = function(){
     document.getElementsByClassName("modal-title")[0].innerHTML = "Thêm sản phẩm";
     var buttonAdd = `<button class="btn btn-success" onclick="addProduct()">Thêm</button>`;
     document.getElementsByClassName("modal-footer")[0].innerHTML = buttonAdd;
+
+    // Reset input
+    resetInput();
+    resetThongBao();
 };
 
 function close(){
     document.getElementsByClassName("close")[0].click();
+}
+
+function resetInput(){
+    // Reset input
+    getEle("TenSP").value = "";
+    getEle("GiaSP").value = "";
+    getEle("manHinh").value = "";
+    getEle("camerasau").value = "";
+    getEle("cameratruoc").value = "";
+    getEle("HinhSP").value = "";
+    getEle("MoTa").value = "";
+    getEle("loaiSP").value = "";
+}
+
+function resetThongBao(){
+    // Reset thông báo
+    getEle("tbTenSP").style.display = "none";
+    getEle("tbGiaSP").style.display = "none";
+    getEle("tbScreen").style.display = "none";
+    getEle("tbBackCamera").style.display = "none";
+    getEle("tbFrontCamera").style.display = "none";
+    getEle("tbImg").style.display = "none";
+    getEle("tbDesc").style.display = "none";
+    getEle("tbType").style.display = "none";
 }

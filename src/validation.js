@@ -44,28 +44,44 @@ function Validation(){
 			return false;
 	};
 
-	// // Validation nameProduct
-	// this.checkProductExist = function (value, errorId, mess, list) {
-    //     var isExist = false;
+	// Validation nameProduct
+	this.checkProductExist = function (value, errorId, mess, list) {
+        var isExist = false;
     
-    //     for (var i = 0; i < list.length; i++) {
-    //         var product = list[i];
-    //         if (product.tenSP === value) {
-    //         isExist = true;
-    //         break;
-    //         }
-    //     }
+        for (var i = 0; i < list.length; i++) {
+            var product = list[i];
+            if (product.name === value) {
+            isExist = true;
+            break;
+            }
+        }
 
-    // if (isExist) {
-    //     getEle(errorId).innerHTML = mess;
-    //     getEle(errorId).style.display = "block";
+    if (isExist) {
+        getEle(errorId).innerHTML = mess;
+        getEle(errorId).style.display = "block";
 
-    //     return false;
-    //     }
+        return false;
+        }
 
-    //     getEle(errorId).innerHTML = "";
-    //     getEle(errorId).style.display = "none";
+        getEle(errorId).innerHTML = "";
+        getEle(errorId).style.display = "none";
 
-    //     return true;
-    // };
+        return true;
+    };
+	
+	this.checkDoDaiKiTu = function (value, errorId, mess, min, max) {
+        if (min <= value.trim() && value.trim() <= max) {
+            //true
+            getEle(errorId).innerHTML = "";
+            getEle(errorId).style.display = "none";
+
+            return true;
+        }
+
+      //false
+        getEle(errorId).innerHTML = mess;
+        getEle(errorId).style.display = "block";
+
+        return false;
+    };
 }
