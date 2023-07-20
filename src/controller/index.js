@@ -130,7 +130,9 @@ function deleteProduct(id){
         })
 }
 
+//=======================================================================
 
+// function update
     // Send request change product to backend
 function updateProduct(id){
     document.getElementsByClassName("modal-title")[0].innerHTML = "Chỉnh sửa sản phẩm";
@@ -225,6 +227,35 @@ function updateUI(id){
     }
 }
 
+//=========================================================================
+
+// Function search
+    // search product (arr)
+    function timKiemProduct (keyword){
+        var mangTimKiem = [];
+        for (var i = 0; i <  arrProduct.length; i++){
+            var product = arrProduct[i];
+            var keywordLowerCase = keyword.toLowerCase();
+            var loaiProduct = product.name.toLowerCase();
+            if (loaiProduct.indexOf(keywordLowerCase) !== -1){
+                mangTimKiem.push(product);
+            }
+        }
+        return mangTimKiem;
+    }
+
+    // Search Product
+    function searchProduct(){
+        var txtSearch = getEle("txtSearchProduct").value;
+        var mangSearch = timKiemProduct(txtSearch);
+        renderUI(mangSearch);
+    }
+
+    // Add event keyup for searchProduct
+    getEle("txtSearchProduct").addEventListener("keyup",searchProduct);
+
+//================================================================
+
 // Add buttonAdd
 getEle("btnThemSP").onclick = function(){
     document.getElementsByClassName("modal-title")[0].innerHTML = "Thêm sản phẩm";
@@ -236,10 +267,12 @@ getEle("btnThemSP").onclick = function(){
     resetThongBao();
 };
 
+// Auto close Modal
 function close(){
     document.getElementsByClassName("close")[0].click();
 }
 
+// Reset input
 function resetInput(){
     // Reset input
     getEle("TenSP").value = "";
@@ -252,6 +285,7 @@ function resetInput(){
     getEle("loaiSP").value = "";
 }
 
+// Reset thông báo
 function resetThongBao(){
     // Reset thông báo
     getEle("tbTenSP").style.display = "none";
