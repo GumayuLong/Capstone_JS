@@ -13,11 +13,10 @@ function getListProduct(){
     var promise = api.getListProductApi();
 
     promise
-        .then(function(product){
-            renderUI(product.data);
-            arrProduct = product.data;
-            // console.log(product.data);
-            // return result.data;
+        .then(function(result){
+            renderUI(result.data);
+            // console.log(result.data);
+            arrProduct = result.data;
         })
         .catch(function(err){
             console.log(err);
@@ -77,7 +76,7 @@ function addProduct(){
         // Validation TenSP
         isValid &= validation.checkRong(tenSP, "tbTenSP", "(*) Vui lòng nhập tên sản phẩm") &&
         validation.checkProductExist(tenSP, "tbTenSP", "(*) Sản phẩm đã tồn tại", arrProduct);
-    }
+    };
     
     // Validation gia
     isValid &= validation.checkRong(gia, "tbGiaSP", "(*) Vui lòng nhập giá tiền")
@@ -102,10 +101,10 @@ function addProduct(){
     // Validation Loai
     isValid &= validation.typeCheck("loaiSP", "tbType", "(*) Vui lòng chọn loại sản phẩm");
 
-
     if (isValid){
-        var product = new Product("", tenSP, gia, screen, cameraSau, cameraTruoc, hinhAnh, moTa, loai);
-        var promise = api.addProductApi(product);
+        var products = new Product("", tenSP, gia*1, screen, cameraSau, cameraTruoc, hinhAnh, moTa, loai);
+        console.log(products);
+        var promise = api.addProductApi(products);
         promise
             .then(function(){
                 getListProduct();
@@ -254,6 +253,26 @@ function updateUI(id){
 
     // Add event keyup for searchProduct
     getEle("txtSearchProduct").addEventListener("keyup",searchProduct);
+
+//================================================================
+
+// Function arrange
+// function sapXepBeLon(){
+//     var mangBeLon = [];
+//     for (var i = 0; i < arrProduct.length; i++) {
+//         var product1 = arrProduct[i].price * 1;
+//         var product2 = arrProduct[i+1].price * 1;
+//         if (product1 > product2){
+//             var temp = product1;
+//             product1 = product2;
+//             product2 = temp;
+//         }
+//     }
+//     mangBeLon.push(product1);
+//     renderUI(mangBeLon);
+// }
+
+
 
 //================================================================
 

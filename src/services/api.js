@@ -13,7 +13,7 @@ function Service(){
 		var promise = axios({
 			url: "https://64b5010ef3dbab5a95c67b83.mockapi.io/api/product",
 			method: "POST",
-			data: product,
+			data: product
 		});
 		return promise;
 	};
@@ -47,5 +47,3 @@ function Service(){
 		return promise;
 	};
 }
-
-
