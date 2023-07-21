@@ -102,8 +102,9 @@ function addProduct(){
     isValid &= validation.typeCheck("loaiSP", "tbType", "(*) Vui lòng chọn loại sản phẩm");
 
     if (isValid){
-        var products = new Product("", tenSP, gia*1, screen, cameraSau, cameraTruoc, hinhAnh, moTa, loai);
-        console.log(products);
+        gia = gia * 1;
+        var products = new Product("", tenSP, gia, screen, cameraSau, cameraTruoc, hinhAnh, moTa, loai);
+        // console.log(products);
         var promise = api.addProductApi(products);
         promise
             .then(function(){
@@ -236,8 +237,8 @@ function updateUI(id){
         for (var i = 0; i <  arrProduct.length; i++){
             var product = arrProduct[i];
             var keywordLowerCase = keyword.toLowerCase();
-            var loaiProduct = product.name.toLowerCase();
-            if (loaiProduct.indexOf(keywordLowerCase) !== -1){
+            var tenProduct = product.name.toLowerCase();
+            if (tenProduct.indexOf(keywordLowerCase) !== -1){
                 mangTimKiem.push(product);
             }
         }
@@ -257,21 +258,6 @@ function updateUI(id){
 //================================================================
 
 // Function arrange
-// function sapXepBeLon(){
-//     var mangBeLon = [];
-//     for (var i = 0; i < arrProduct.length; i++) {
-//         var product1 = arrProduct[i].price * 1;
-//         var product2 = arrProduct[i+1].price * 1;
-//         if (product1 > product2){
-//             var temp = product1;
-//             product1 = product2;
-//             product2 = temp;
-//         }
-//     }
-//     mangBeLon.push(product1);
-//     renderUI(mangBeLon);
-// }
-
 
 
 //================================================================
