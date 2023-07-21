@@ -259,6 +259,23 @@ function updateUI(id){
 
 // Function arrange
 
+function sapXepBeLon(arrange){
+    arrange = arrProduct;
+    arrange.sort(function(a,b){
+        return a.price - b.price;
+    })
+    // console.log(arrProduct);
+    renderUI(arrange);
+}
+
+function sapXepLonBe(arrange){
+    arrange = arrProduct;
+    arrange.sort(function(a,b){
+        return b.price - a.price;
+    })
+    // console.log(arrProduct);
+    renderUI(arrange);
+}
 
 //================================================================
 
